@@ -1710,6 +1710,12 @@ function lineupKMult(lineup, spHand, spK9, batterMap){
   if(pp>=0.67) m*=0.94; else if(pp<=0.33) m*=1.06;
   return {mult:Math.max(0.70,Math.min(1.40,m)), kr:lk, plat};
 }
+function projStrikeouts(sp, mult, parkRf){
+  /* port of model_sp_strikeouts(): proj_k × lineup adj × park adj */
+  const la = Math.max(0.75, Math.min(1.35, mult));
+  const pa = Math.max(0.95, Math.min(1.05, 1 + (1 - parkRf) * 0.05));
+  return Math.max(1, Math.min(15, sp.projK * la * pa));
+}
 function ipFloat(ip){ const p=String(ip||"0").split("."); return (+p[0]||0)+((+p[1]||0)/3); }
 
 function parseHitter(person){
